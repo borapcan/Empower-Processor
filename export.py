@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 from utils.create_df import process_txt_files
 
 # Get the path to the user's home directory

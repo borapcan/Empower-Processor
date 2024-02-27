@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Processing App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .btn-custom {
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">File Processing App</h1>
+        
+        <div class="mb-3">
+            <label for="directory" class="form-label">Select Directory:</label>
+            <div class="input-group">
+                <button id="directory" class="btn btn-custom" onclick="selectDirectory()">Choose Directory</button>
+                <input type="text" class="form-control" id="directoryPath" readonly>
+            </div>
+        </div>
+
+        <!-- Success alert -->
+        <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
+            Directory selected successfully!
+        </div>
+        
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
+            <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
+        </div>
+        
+        <button class="btn btn-custom" onclick="processFiles()">Start Processing</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        async function selectDirectory() {
+            const directory = await eel.choose_directory()();
+            document.getElementById("directoryPath").value = directory;
+
+            // Show success alert
+            document.getElementById("successAlert").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("successAlert").style.display = "none";
+            }, 3000); // Hide the alert after 3 seconds
+        }
+
+        function toggleExportArea() {
+            const exportAreaChecked = document.getElementById("exportAreaCheckbox").checked;
+            eel.process_files(exportAreaChecked)();
+        }
+
+        function processFiles() {
+            eel.process_files(document.getElementById("exportAreaCheckbox").checked)();
+        }
+    </script>
+
+    <script type="text/javascript" src="/eel.js"></script>
+</body>
+</html>
