@@ -7,36 +7,57 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .btn-custom {
+        .container{
+            height: 100%;
+        }
+
+        .container_title{
+            margin-bottom: 50px;
+        }
+
+        .container_form-label{
+            margin-bottom: 10px;
+        }
+
+        .container_Button {
             border-radius: 20px;
             background-color: #f0f0f0;
             color: #000;
         }
+
+        .container_directory{
+            margin-bottom: 50px;
+        }
+
+        .container_form-check{
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">File Processing App</h1>
+        <h1 class="container_title">File Processing App</h1>
         
-        <div class="mb-3">
-            <label for="directory" class="form-label">Select Directory:</label>
+        <div class="container_directory">
+            <label for="directory" class="container_form-label">Select Directory:</label>
             <div class="input-group">
-                <button id="directory" class="btn btn-custom" onclick="selectDirectory()">Choose Directory</button>
+                <button id="directory" class="btn container_Button" onclick="selectDirectory()">Choose Directory</button>
                 <input type="text" class="form-control" id="directoryPath" readonly>
             </div>
         </div>
-
-        <!-- Success alert -->
-        <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
-            Directory selected successfully!
-        </div>
         
-        <div class="form-check mb-3">
+        <div class="container_form-check">
             <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
             <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
         </div>
         
-        <button class="btn btn-custom" onclick="processFiles()">Start Processing</button>
+        <button class="btn container_Button" onclick="processFiles()">Start Processing</button>
+
+        <!-- Success alert -->
+        <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
+            Your files were converted sucessfully! You can find them inside conversion_folder.
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
@@ -44,12 +65,6 @@
         async function selectDirectory() {
             const directory = await eel.choose_directory()();
             document.getElementById("directoryPath").value = directory;
-
-            // Show success alert
-            document.getElementById("successAlert").style.display = "block";
-            setTimeout(function() {
-                document.getElementById("successAlert").style.display = "none";
-            }, 3000); // Hide the alert after 3 seconds
         }
 
         function toggleExportArea() {
@@ -59,6 +74,12 @@
 
         function processFiles() {
             eel.process_files(document.getElementById("exportAreaCheckbox").checked)();
+
+            // Show success alert
+            document.getElementById("successAlert").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("successAlert").style.display = "none";
+            }, 5000); // Hide the alert after 3 seconds
         }
     </script>
 

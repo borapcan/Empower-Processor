@@ -11,7 +11,7 @@ TEXT_FILES_DIRECTORY = ""
 eel.init("web")
 
 
-# Eel function to choose a directory
+# Eel expose file path to the app
 @eel.expose
 def choose_directory():
     global TEXT_FILES_DIRECTORY
@@ -19,7 +19,8 @@ def choose_directory():
     root.withdraw()  # Hide the Tkinter window
     directory = filedialog.askdirectory()
     root.destroy()  # Destroy the Tkinter window
-    TEXT_FILES_DIRECTORY = directory  # Update the global variable
+    TEXT_FILES_DIRECTORY = str(directory)
+    return TEXT_FILES_DIRECTORY
 
 
 # Eel function to process files based on user input
@@ -44,4 +45,11 @@ def process_files(export_area):
 
 
 # Start Eel app
-eel.start("index.html", size=(800, 600))
+eel.start(
+    "index.html",
+    size=(800, 600),
+    mode="chrome",
+    port=0,
+    host="localhost",
+    fullscreen=True,
+)
