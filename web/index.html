@@ -6,82 +6,149 @@
     <title>File Processing App</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .container{
-            height: 100%;
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Set body font to Roboto */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Open Sans', sans-serif; /* Set heading font to Open Sans */
         }
 
-        .container_title{
-            margin-bottom: 50px;
+        .container{
+            height: 100%;
+            background-color: #f5eaea;
+            margin-top: 15%;
+            height: 420px;
+            width: 600px;
+            border-radius: 20px;   
+            box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.5);   
+        }
+
+        .container_content{
+            padding: 20px;
+        }
+
+        .container_ctitle{
+            margin-left: 10px;
+            margin-bottom: 70px;
+        }
+
+        .container_directory{
+            margin-top: 50px;
         }
 
         .container_form-label{
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-check-input:checked{
+            background-color: #ff7f08;
         }
 
         .container_Button {
             border-radius: 20px;
-            background-color: #f0f0f0;
+            background-color: #ff7f08;
             color: #000;
         }
 
+        .container_Button:hover{
+            background-color: #fec48e;
+        }
+        
         .container_directory{
             margin-bottom: 50px;
         }
 
+        .form-check-label{ 
+            margin-left: 5px;
+        }
+
         .container_form-check{
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .container_messages {
+            border-radius: 10px;
+            margin-top: 10px;
         }
 
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="container_title">File Processing App</h1>
-        
-        <div class="container_directory">
-            <label for="directory" class="container_form-label">Select Directory:</label>
-            <div class="input-group">
-                <button id="directory" class="btn container_Button" onclick="selectDirectory()">Choose Directory</button>
-                <input type="text" class="form-control" id="directoryPath" readonly>
+        <div class="container_content">
+            <div class="container_title-container">
+                <h1 class="container_title">File Processing App</h1>
             </div>
-        </div>
-        
-        <div class="container_form-check">
-            <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
-            <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
-        </div>
-        
-        <button class="btn container_Button" onclick="processFiles()">Start Processing</button>
+            
+            
+            <div class="container_directory">
+                <label for="directory" class="container_form-label">Select Directory with your Empower data:</label>
+                <div class="input-group">
+                    <button id="directory" class="btn container_Button" onclick="selectDirectory()">Choose Directory</button>
+                    <input type="text" class="form-control" id="directoryPath" readonly>
+                </div>
+            </div>
+            
+            <div class="container_form-check">
+                <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
+                <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
+            </div>
+            
+            <button class="btn container_Button" onclick="processFiles()">Start Processing</button>
 
-        <!-- Success alert -->
-        <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
-            Your files were converted sucessfully! You can find them inside conversion_folder.
+            <!-- Success alert -->
+            <div class="container_messages">
+                <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
+                </div>
+
+                <div class="alert alert-danger" id="errorAlert" role="alert" style="display: none;">
+                </div>
+            </div>
+
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        async function selectDirectory() {
-            const directory = await eel.choose_directory()();
-            document.getElementById("directoryPath").value = directory;
-        }
 
-        function toggleExportArea() {
-            const exportAreaChecked = document.getElementById("exportAreaCheckbox").checked;
-            eel.process_files(exportAreaChecked)();
-        }
+    // Set background image using JavaScript
+    document.body.style.backgroundImage = "url('images/bg.jpg')";
+    document.body.style.backgroundSize = "100%";
+    document.body.style.backgroundRepeat = "no-repeat";
 
-        function processFiles() {
-            eel.process_files(document.getElementById("exportAreaCheckbox").checked)();
+    async function selectDirectory() {
+        const directory = await eel.choose_directory()();
+        document.getElementById("directoryPath").value = directory;
+    }
 
-            // Show success alert
-            document.getElementById("successAlert").style.display = "block";
-            setTimeout(function() {
-                document.getElementById("successAlert").style.display = "none";
-            }, 5000); // Hide the alert after 3 seconds
-        }
-    </script>
+    function toggleExportArea() {
+        eel.toggle_export_area()().then(response => {
+            console.log(response); // Logging the response for debugging
+        });
+    }
+
+    function processFiles() {
+        eel.process_files(document.getElementById("exportAreaCheckbox").checked)().then(response => {
+            if (response.startsWith("Files processed successfully")) {
+                // Show success alert
+                document.getElementById("successAlert").innerText = response;
+                document.getElementById("successAlert").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("successAlert").style.display = "none";
+                }, 5000); // Hide the alert after 5 seconds
+            } else {
+                // Show error alert
+                document.getElementById("errorAlert").innerText = response;
+                document.getElementById("errorAlert").style.display = "block";
+            }
+            document.getElementById("directoryPath").value = ''
+        });
+    }
+</script>
 
     <script type="text/javascript" src="/eel.js"></script>
 </body>

@@ -6,6 +6,8 @@ from utils.create_df import process_txt_files
 
 # Define the directory where text files will be processed
 TEXT_FILES_DIRECTORY = ""
+export_area = False
+
 
 # Define the Eel frontend directory
 eel.init("web")
@@ -23,31 +25,48 @@ def choose_directory():
     return TEXT_FILES_DIRECTORY
 
 
+@eel.expose
+def toggle_export_area():
+    global export_area
+    if export_area == False:
+        export_area = True
+    else:
+        export_area = False
+
+
 # Eel function to process files based on user input
 @eel.expose
 def process_files(export_area):
     global TEXT_FILES_DIRECTORY
-    if TEXT_FILES_DIRECTORY:
-        dfs_dict = process_txt_files(TEXT_FILES_DIRECTORY, export_area)
+    try:
+        if TEXT_FILES_DIRECTORY:
+            dfs_dict = process_txt_files(TEXT_FILES_DIRECTORY, export_area)
 
-        # Loop through the dictionary of DataFrames
-        for file_path, df in dfs_dict.items():
-            # Extract the filename from the file path
-            filename = os.path.basename(file_path)
+            # Loop through the dictionary of DataFrames
+            for file_path, df in dfs_dict.items():
+                # Extract the filename from the file path
+                filename = os.path.basename(file_path)
 
-            # Define the Excel filename
-            excel_filename = os.path.splitext(filename)[0] + ".xlsx"
+                # Define the Excel filename
+                excel_filename = os.path.splitext(filename)[0] + ".xlsx"
 
-            # Export the DataFrame to an Excel file
-            df.to_excel(os.path.join("conversion_folder", excel_filename), index=False)
-    else:
-        print("Please select a directory first.")
+                # Export the DataFrame to an Excel file
+                df.to_excel(
+                    os.path.join("conversion_folder", excel_filename), index=False
+                )
+
+            TEXT_FILES_DIRECTORY = ""
+            return "Files processed successfully"
+        else:
+            return "There was an error processing files"
+    except ValueError:
+        return ValueError
 
 
 # Start Eel app
 eel.start(
     "index.html",
-    size=(800, 600),
+    size=(1920, 1080),
     mode="chrome",
     port=0,
     host="localhost",
