@@ -3,11 +3,14 @@ import eel
 from tkinter import filedialog, Tk
 
 from utils.create_df import process_txt_files
+from utils.helpers import remove_after_period
+
+# from utils.stats import stats
 
 # Define the directory where text files will be processed
 TEXT_FILES_DIRECTORY = ""
 export_area = False
-
+stats_c = False
 
 # Define the Eel frontend directory
 eel.init("web")
@@ -34,6 +37,17 @@ def toggle_export_area():
         export_area = False
 
 
+@eel.expose
+def toggle_stats():
+    global stats_c
+    if stats_c == False:
+        stats_c = True
+    else:
+        stats_c = False
+
+    print(stats_c)
+
+
 # Eel function to process files based on user input
 @eel.expose
 def process_files(export_area):
@@ -50,9 +64,15 @@ def process_files(export_area):
                 # Define the Excel filename
                 excel_filename = os.path.splitext(filename)[0] + ".xlsx"
 
+                folder_name = remove_after_period(filename)
+                # Create the folder if it doesn't exist
+                folder_path = os.path.join("conversion_folder", folder_name)
+                os.makedirs(folder_path, exist_ok=True)
+
                 # Export the DataFrame to an Excel file
                 df.to_excel(
-                    os.path.join("conversion_folder", excel_filename), index=False
+                    os.path.join(folder_path, excel_filename),
+                    index=False,
                 )
 
             TEXT_FILES_DIRECTORY = ""

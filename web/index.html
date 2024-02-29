@@ -21,7 +21,7 @@
             height: 100%;
             background-color: #f5eaea;
             margin-top: 15%;
-            height: 420px;
+            height: 400px;
             width: 600px;
             border-radius: 20px;   
             box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.5);   
@@ -33,15 +33,20 @@
 
         .container_ctitle{
             margin-left: 10px;
-            margin-bottom: 70px;
+            margin-bottom: 20px;
         }
 
         .container_directory{
-            margin-top: 50px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .form-control{
+            border-radius: 20px;
         }
 
         .container_form-label{
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            margin-top: 15px;
         }
 
         .form-check-input:checked{
@@ -51,15 +56,11 @@
         .container_Button {
             border-radius: 20px;
             background-color: #ff7f08;
-            color: #000;
+            color: #FFFFFF;
         }
 
         .container_Button:hover{
             background-color: #fec48e;
-        }
-        
-        .container_directory{
-            margin-bottom: 50px;
         }
 
         .form-check-label{ 
@@ -94,8 +95,14 @@
             </div>
             
             <div class="container_form-check">
-                <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
-                <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="exportAreaCheckbox" onchange="toggleExportArea()">
+                    <label class="form-check-label" for="exportAreaCheckbox">Export Area</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="statsCheckbox" onchange="toggleStats()">
+                    <label class="form-check-label" for="statsCheckbox">Stats</label>
+                </div>
             </div>
             
             <button class="btn container_Button" onclick="processFiles()">Start Processing</button>
@@ -131,6 +138,12 @@
         });
     }
 
+    function toggleStats() {
+        eel.toggle_stats()().then(response => {
+            console.log(response); // Logging the response for debugging
+        });
+    }
+
     function processFiles() {
         eel.process_files(document.getElementById("exportAreaCheckbox").checked)().then(response => {
             if (response.startsWith("Files processed successfully")) {
@@ -144,6 +157,9 @@
                 // Show error alert
                 document.getElementById("errorAlert").innerText = response;
                 document.getElementById("errorAlert").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("errorAlert").style.display = "none";
+                }, 5000); // Hide the alert after 5 seconds
             }
             document.getElementById("directoryPath").value = ''
         });
