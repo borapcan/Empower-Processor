@@ -63,8 +63,6 @@ def generate_combined_stats_excel(all_identifiers, df):
 
         stats_df = pd.DataFrame(stats_data)
 
-        print(stats_df)
-
         # Append the statistics for the current identifier to the combined DataFrame
         combined_stats_df = pd.concat([combined_stats_df, stats_df], ignore_index=True)
 
