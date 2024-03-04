@@ -103,6 +103,10 @@
                     <input type="checkbox" class="form-check-input" id="statsCheckbox" onchange="toggleStats()">
                     <label class="form-check-label" for="statsCheckbox">Stats</label>
                 </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="plotCheckbox" onchange="togglePlot()">
+                    <label class="form-check-label" for="statsCheckbox">Box plot</label>
+                </div>
             </div>
             
             <button class="btn container_Button" onclick="processFiles()">Start Processing</button>
@@ -144,6 +148,12 @@
         });
     }
 
+    function togglePlot() {
+        eel.toggle_plot()().then(response => {
+            console.log(response); // Logging the response for debugging
+        });
+    }
+
     function processFiles() {
         eel.process_files(document.getElementById("exportAreaCheckbox").checked)().then(response => {
             if (response.startsWith("Files processed successfully")) {
@@ -164,6 +174,7 @@
             document.getElementById("directoryPath").value = ''
         });
     }
+    
 </script>
 
     <script type="text/javascript" src="/eel.js"></script>

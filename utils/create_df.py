@@ -97,7 +97,7 @@ def process_txt_files(dir_path, export_area=False):
                 df = pd.DataFrame(rows)
 
                 # Create a list of header labels for the dataframe
-                header = ["Sample Name", ""] + [
+                header = ["Sample Name", "Area type"] + [
                     f"GP{i+1}" for i in range(df.shape[1] - 2)
                 ]
                 df.columns = header
