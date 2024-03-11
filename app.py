@@ -1,6 +1,7 @@
 import os
 import eel
 from tkinter import filedialog, Tk
+from pathlib import Path
 
 from utils.create_df import process_txt_files
 from utils.helpers import remove_after_period

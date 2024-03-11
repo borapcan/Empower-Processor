@@ -8,75 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-
-        body {
-            font-family: 'Roboto', sans-serif; /* Set body font to Roboto */
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Open Sans', sans-serif; /* Set heading font to Open Sans */
-        }
-
-        .container{
-            height: 100%;
-            background-color: #f5eaea;
-            margin-top: 15%;
-            height: 400px;
-            width: 600px;
-            border-radius: 20px;   
-            box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.5);   
-        }
-
-        .container_content{
-            padding: 20px;
-        }
-
-        .container_ctitle{
-            margin-left: 10px;
-            margin-bottom: 20px;
-        }
-
-        .container_directory{
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-        .form-control{
-            border-radius: 20px;
-        }
-
-        .container_form-label{
-            margin-bottom: 10px;
-            margin-top: 15px;
-        }
-
-        .form-check-input:checked{
-            background-color: #ff7f08;
-        }
-
-        .container_Button {
-            border-radius: 20px;
-            background-color: #ff7f08;
-            color: #FFFFFF;
-        }
-
-        .container_Button:hover{
-            background-color: #fec48e;
-        }
-
-        .form-check-label{ 
-            margin-left: 5px;
-        }
-
-        .container_form-check{
-            margin-bottom: 30px;
-        }
-
-        .container_messages {
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-    </style>
+    <link href="styles\converter_styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -123,60 +55,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-
-    // Set background image using JavaScript
-    document.body.style.backgroundImage = "url('images/bg3.jpg')";
-    document.body.style.backgroundSize = "cover";
-
-
-    async function selectDirectory() {
-        const directory = await eel.choose_directory()();
-        document.getElementById("directoryPath").value = directory;
-    }
-
-    function toggleExportArea() {
-        eel.toggle_export_area()().then(response => {
-            console.log(response); // Logging the response for debugging
-        });
-    }
-
-    function toggleStats() {
-        eel.toggle_stats()().then(response => {
-            console.log(response); // Logging the response for debugging
-        });
-    }
-
-    function togglePlot() {
-        eel.toggle_plot()().then(response => {
-            console.log(response); // Logging the response for debugging
-        });
-    }
-
-    function processFiles() {
-        eel.process_files(document.getElementById("exportAreaCheckbox").checked)().then(response => {
-            if (response.startsWith("Files processed successfully")) {
-                // Show success alert
-                document.getElementById("successAlert").innerText = response;
-                document.getElementById("successAlert").style.display = "block";
-                setTimeout(function() {
-                    document.getElementById("successAlert").style.display = "none";
-                }, 5000); // Hide the alert after 5 seconds
-            } else {
-                // Show error alert
-                document.getElementById("errorAlert").innerText = response;
-                document.getElementById("errorAlert").style.display = "block";
-                setTimeout(function() {
-                    document.getElementById("errorAlert").style.display = "none";
-                }, 5000); // Hide the alert after 5 seconds
-            }
-            document.getElementById("directoryPath").value = ''
-        });
-    }
-    
-</script>
-
+    <script src="scripts/converter_script.js"></script>
     <script type="text/javascript" src="/eel.js"></script>
 </body>
 </html>
