@@ -6,9 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
-#Generated files
+# Generated files
 *.xlsx
-*.pdf
+#generated tables
+*.pdf 
+#generated figures
 
 # Distribution / packaging
 .Python

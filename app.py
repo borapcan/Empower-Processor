@@ -28,7 +28,8 @@ def choose_directory():
     global TEXT_FILES_DIRECTORY
     root = Tk()
     root.withdraw()  # Hide the Tkinter window
-    directory = filedialog.askdirectory()
+    root.attributes("-topmost", True)
+    directory = filedialog.askdirectory(parent=root)
     root.destroy()  # Destroy the Tkinter window
     TEXT_FILES_DIRECTORY = str(directory)
     return TEXT_FILES_DIRECTORY

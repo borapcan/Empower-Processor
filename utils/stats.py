@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-import math
 
 
 def generate_sample_list_excel(df):
@@ -21,6 +20,8 @@ def generate_sample_list_excel(df):
 
         # Process 'STAND' identifiers
         if parts[0].lower().startswith("stand"):
+            stats.append(parts[0] + "_" + parts[1])
+        elif parts[0].lower().startswith("Plasma pool"):
             stats.append(parts[0] + "_" + parts[1])
         else:
             stats.append(f"{parts[0]}")
@@ -75,8 +76,6 @@ def generate_box_plot(df):
 
     # Set Seaborn style with no grid lines
     sns.set_style("white")
-
-    print(filtered_df)
 
     # Get columns starting with 'GP'
     gp_columns = [col for col in filtered_df.columns if col.startswith("GP")]
