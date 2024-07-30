@@ -12,7 +12,6 @@ print(dir_path)
 # Call the function to process text files and get the dictionary of DataFrames
 dfs_dict = process_txt_files(dir_path, export_area=True)
 
-print(dfs_dict)
 # # Loop through the dictionary of DataFrames
 # for file_path, df in dfs_dict.items():
 #     # Extract the filename from the file path
