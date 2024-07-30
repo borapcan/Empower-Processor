@@ -4,8 +4,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def generate_sample_list_excel(df):
+import pandas as pd
 
+
+def generate_sample_list_excel(df):
     stats = []
 
     for index, row in df.iterrows():
@@ -17,14 +19,28 @@ def generate_sample_list_excel(df):
 
         # Split the sample name
         parts = sample_name.split("_")
+        print(f"Processing sample name: {sample_name}")
+        print(f"Split parts: {parts}")
 
-        # Process 'STAND' identifiers
-        if parts[0].lower().startswith("stand"):
-            stats.append(parts[0] + "_" + parts[1])
-        elif parts[0].lower().startswith("Plasma pool"):
-            stats.append(parts[0] + "_" + parts[1])
+        # Process 'STAND' and 'Plasma pool' identifiers
+        if parts[0].lower().startswith("stand") or parts[0].lower().startswith(
+            "plasma pool"
+        ):
+            if len(parts) > 1:
+                last_segment = parts[-1]
+                try:
+                    # Try converting the last segment to a number
+                    float(last_segment)
+                    # If successful, create the identifier without the last segment
+                    identifier = "_".join(parts[:-1])
+                except ValueError:
+                    # If conversion fails, include the last segment in the identifier
+                    identifier = "_".join(parts)
+            else:
+                identifier = parts[0]
+            stats.append(identifier)
         else:
-            stats.append(f"{parts[0]}")
+            stats.append(parts[0])
 
     # Sort the list and remove duplicates
     stats = sorted(set(stats))
